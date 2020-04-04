@@ -1,0 +1,11 @@
+{
+    "name": "Floodlight",
+    "version": "0.1.0",
+    "title": "Floodlight",
+    "author": "Codecomp",
+    "contact": "",
+    "homepage": "",
+    "factorio_version": "0.18",
+    "dependencies": ["base >= 0.18"],
+    "description": "Add simple rotateable floodlights to light up the darkness"
+}
