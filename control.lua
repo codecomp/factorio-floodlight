@@ -1,37 +1,31 @@
 
-function array_length(t)
-    count = 0
-    for k,v in pairs(t) do
-         count = count + 1
+script.on_event("floodlight-rotate", function(event)
+
+    local _player = game.players[event.player_index]
+    local selected = _player.selected
+
+    if selected == nil then
+        return
     end
-    return count
-end
 
-local directions = {"n", "ne", "e", "se", "s", "sw", "w", "nw",}
-
-script.on_event(defines.events.on_gui_opened, function(event)
-
+    local directions = {"n", "ne", "e", "se", "s", "sw", "w", "nw",}
     for _, dir in pairs(directions) do
 
-        if event.entity and event.entity.valid and event.entity.name == 'floodlight-'..dir then
-
-            -- Remove popup
-            local _player = game.players[event.player_index]
-            _player.opened = nil
+        if selected.valid and selected.name == "floodlight-"..dir then
 
             -- Locate existing entity
-            local _x = event.entity.position.x
-            local _y = event.entity.position.y
+            local _x = selected.position.x
+            local _y = selected.position.y
 
             -- Work out new entity type
             local next_entity = ""
-            for _, dir in pairs(directions) do
-                if event.entity.name == "floodlight-"..dir then
+            for i, dir in pairs(directions) do
+                if selected.name == "floodlight-"..dir then
 
-                    if _ + 1 > array_length(directions) then
+                    if i + 1 > #directions then
                         next_entity = "floodlight-"..directions[1]
                     else
-                        next_entity = "floodlight-"..directions[_ + 1]
+                        next_entity = "floodlight-"..directions[i + 1]
                     end
 
                     break
@@ -39,11 +33,12 @@ script.on_event(defines.events.on_gui_opened, function(event)
             end
 
             -- Remove existing entity
-            event.entity.destroy()
+            selected.destroy()
 
             -- Create next entity
             game.surfaces["nauvis"].create_entity{name=next_entity, position={x=_x, y=_y}, player=_player, force=_player.force}
 
+            break
         end
 
     end
